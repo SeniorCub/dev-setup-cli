@@ -1,11 +1,67 @@
 #!/usr/bin/env bash
 
+VERSION="1.0.0"
 
 # Colors
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 RED='\033[0;31m'
+YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
+
+show_help() {
+    cat << EOF
+${BLUE}dev-setup${NC} - Developer Project Setup CLI
+
+${GREEN}USAGE:${NC}
+    dev-setup [OPTIONS]
+
+${GREEN}OPTIONS:${NC}
+    -h, --help       Show this help message
+    -v, --version    Show version information
+
+${GREEN}DESCRIPTION:${NC}
+    Interactive CLI tool to scaffold new development projects.
+    Supports Frontend (React, Vue via Vite) and Backend (Node.js, Laravel).
+
+${GREEN}EXAMPLES:${NC}
+    dev-setup              # Start interactive setup
+    dev-setup --help       # Show this help
+    dev-setup --version    # Show version
+
+EOF
+}
+
+show_version() {
+    echo "dev-setup version $VERSION"
+}
+
+detect_os() {
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        echo "linux"
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        echo "macos"
+    elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "win32" ]]; then
+        echo "windows"
+    else
+        echo "unknown"
+    fi
+}
+
+# Handle command-line arguments
+if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
+    show_help
+    exit 0
+fi
+
+if [[ "$1" == "-v" ]] || [[ "$1" == "--version" ]]; then
+    show_version
+    exit 0
+fi
+
+# Detect OS
+OS=$(detect_os)
+echo -e "${BLUE}Detected OS: ${YELLOW}$OS${NC}"
 
 echo -e "${BLUE}Welcome to the Project Setup CLI!${NC}"
 echo "This script will help you scaffold your project."
